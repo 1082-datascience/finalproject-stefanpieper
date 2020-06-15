@@ -30,7 +30,7 @@ Rscript code/code.R --runtype long --fold 5 --train data/train.csv --test data/t
 ## Folder organization and its related information
 
 ### docs
-* [Powerpoint Presentation](docs/1072_datascience_FP_108300154.ppt)
+* [Powerpoint Presentation](docs/1072_datascience_FP_StefanPieper.ppt)
 * [Original Paper on Rotation Forest](docs/Rotation_Forest_Paper_(2006).pdf)
 * [Software User Guide](docs/Software_Guide.md)
 
