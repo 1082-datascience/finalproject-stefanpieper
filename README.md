@@ -41,7 +41,7 @@ Rscript code/code.R --runtype long --fold 5 --train data/train.csv --test data/t
 * .csv
 * Little correlation:
 
-![Correlation](correlation.png)
+![Correlation](results/correlation.png)
 
 
 ### code
@@ -57,9 +57,9 @@ Rscript code/code.R --runtype long --fold 5 --train data/train.csv --test data/t
 * Finding data was by far the hardest part of the assignment. The model process itself was quite challenging, and the model itself took over a day to run. Sadly, the results were not great, possible due to the lack of correlation between variables.
 * Below are two graphs of the accuracies of the rotation models on the training and validation set respectively. Below that is a screenshot of the kaggle result, where the accuracy of the models seems low.
 
-![TrainingAccuracy](rotationForest_training_accuracy.png)
-![ValidationAccuracy](rotationForest_validation_accuracy.png)
-![DontOverfitResults](kaggle_score.png)
+![TrainingAccuracy](results/rotationForest_training_accuracy.png)
+![ValidationAccuracy](results/rotationForest_validation_accuracy.png)
+![DontOverfitResults](results/kaggle_score.png)
 
 
 ## References
