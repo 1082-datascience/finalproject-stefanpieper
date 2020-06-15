@@ -1,4 +1,4 @@
-# Don't Overfit!
+# Don't Overfit
 
 ### Groups
 * Stefan Pieper, 108300154
@@ -26,22 +26,23 @@ Long run (takes up to a 100 for ntree; takes a day to run)
 Rscript code/code.R --runtype long --fold 5 --train data/train.csv --test data/test.csv --report results/report.csv --predict results/predict.csv
 ``` 
 
-* any on-line visualization
 
 ## Folder organization and its related information
 
 ### docs
-* Your presentation, 1072_datascience_FP_<yourID|groupName>.ppt/pptx/pdf, by **Jun. 25**
-* Any related document for the final project
-  * papers
-  * software user guide
+* Powerpoint presentation: docs/1072_datascience_FP_108300154.ppt
+* papers: docs/Rotation_Forest_Paper_(2006).pdf
+* software user guide: docs/Software_Guide.md
 
 ### data
 
 * Kaggle (Don't overfit competition)
 * https://www.kaggle.com/c/dont-overfit-ii
 * .csv
-* Little correlation
+* Little correlation:
+
+![Correlation](correlation.png)
+
 
 ### code
 
@@ -51,9 +52,15 @@ Rscript code/code.R --runtype long --fold 5 --train data/train.csv --test data/t
 
 ### results
 
-* Mean Squared Error is used to compare models
-* The improvement was not significant
+* Accuracy is used to compare models
+* The improvement does not seem significant
 * Finding data was by far the hardest part of the assignment. The model process itself was quite challenging, and the model itself took over a day to run. Sadly, the results were not great, possible due to the lack of correlation between variables.
+* Below are two graphs of the accuracies of the rotation models on the training and validation set respectively. Below that is a screenshot of the kaggle result, where the accuracy of the models seems low.
+
+![TrainingAccuracy](rotationForest_training_accuracy.png)
+![ValidationAccuracy](rotationForest_validation_accuracy.png)
+![DontOverfitResults](kaggle_score.png)
+
 
 ## References
 * Alonso, C.J., Rodríguez, J.J., Kuncheva, L.I. (2006). Rotation Forest: A New Classifier Ensemble Method. 
@@ -63,6 +70,6 @@ IEEE Transactions on Pattern Analysis and Machine Intelligence, 28(10), 1619-163
 * corrplot
 * glmnet
 * randomForest
-* (rotationForest)
+* rotationForest (My rotation forest functions are heavily based on the rotationForest function in this package)
 * rpart
 

@@ -243,7 +243,7 @@ predict.RotationForest <- function(models, newdata, type=c("prob", "class"), all
   return(output)
 }
 
-cv.RotationForest <- function(x, y, x_test=NULL, y_test=NULL, nfolds=10, type.measure=c("mse"), round.results=FALSE, test=FALSE,
+cv.RotationForest <- function(x, y, x_test=NULL, y_test=NULL, nfolds=5, type.measure=c("accuracy"), round.results=FALSE, test=FALSE,
                               K=round(ncol(x)/3, 0), ntree=10, verbose=FALSE, ...){
   
   folds <- sample(rep(c(1:nfolds), each=ceiling(nrow(x)/nfolds)))
@@ -274,17 +274,17 @@ cv.RotationForest <- function(x, y, x_test=NULL, y_test=NULL, nfolds=10, type.me
       y_valid <- y[folds == i]
     }
     
-    model <- RotationForest(x_train, y_train, K, ntree ,verbose)
+    model[[i]] <- RotationForest(x_train, y_train, K, ntree ,verbose)
     
-    pred.train <- predict.RotationForest(model, x_train, type="prob")
-    pred.valid <- predict.RotationForest(model, x_valid, type="prob")
+    pred.train <- predict.RotationForest(model[[i]], x_train, type="prob")
+    pred.valid <- predict.RotationForest(model[[i]], x_valid, type="prob")
     
     perf[i, "training"] <- sum(pred.train == y_train) / nrow(x_train)
     perf[i, "validation"] <- sum(pred.valid == y_valid) / nrow(x_valid)
     
     # predict on test data if available
     if (!is.null(x_test)){
-      pred.test <- predict.RotationForest(model, x_test, type="prob")
+      pred.test <- predict.RotationForest(model[[i]], x_test, type="prob")
       if (!is.null(y_test)){
         perf[i, "test"] <- sum(pred.test == y_test) / nrow(y_test)
       }
@@ -313,7 +313,7 @@ cv.RotationForest <- function(x, y, x_test=NULL, y_test=NULL, nfolds=10, type.me
   }
 }
 
-vary.RotationForest <- function(x, y, x_test=NULL, y_test=NULL, plot.results=TRUE, nfolds=10, type.measure=c("mse"), round.results=FALSE, test=FALSE,
+vary.RotationForest <- function(x, y, x_test=NULL, y_test=NULL, plot.results=TRUE, nfolds=5, type.measure=c("accuracy"), round.results=FALSE, test=FALSE,
                                 K=c(round(ncol(x)/3, 0), round(ncol(x)/6, 0), round(ncol(x)/9, 0)), ntree=c(50, 100), verbose=FALSE, save.file=NULL, ...){
   output <- list()
   for (k in K){
@@ -413,7 +413,7 @@ res.rotation <- vary.RotationForest(raw.train[,-c(1,2)], raw.train[,2], x_test=r
 if (exists("runtype") && runtype == "demo"){
   load("data/rotation_output.RData")
   res.rotation <- get("output"); rm(output)
-  plot.RotationForest(res.rotation, pos="bottomright")
+  plot.RotationForest(res.rotation, pos="bottomleft")
 }
 
 best.model <- RotationForest(raw.train[,-c(1,2)], raw.train[,2], K=res.rotation$best.K, ntree=res.rotation$best.ntree, verbose=TRUE)
@@ -428,7 +428,7 @@ write.table(pred.rotation, row.names=F, file=paste0(predict_file, "_rotationFore
 
 #### 4. Random Forest ####
 
-cv.randomForest <- function(x, y, x_test=NULL, nfolds, ntree=10, replace=TRUE, verbose=TRUE){
+vary.randomForest <- function(x, y, x_test=NULL, nfolds=5, ntree=10, replace=TRUE, verbose=TRUE){
   folds <- sample(rep(c(1:nfolds), each=ceiling(nrow(raw.train)/nfolds)))
   folds <- folds[1:nrow(raw.train)]
 
@@ -484,7 +484,7 @@ cv.randomForest <- function(x, y, x_test=NULL, nfolds, ntree=10, replace=TRUE, v
   return(list(prediction=pred, best.model=best.model, best_ntree=best_ntree, best_replace=best_replace, performance=perf, models=model))
 }
 
-res.random <- cv.randomForest(x=raw.train[,-c(1,2)], y=as.factor(raw.train[,2]), x_test=raw.test[,-c(1,2)], nfolds=nfolds, ntree <- c(10, 25, 50, 100, 200), replace <- c(F,T))
+res.random <- vary.randomForest(x=raw.train[,-c(1,2)], y=as.factor(raw.train[,2]), x_test=raw.test[,-c(1,2)], nfolds=nfolds, ntree <- c(10, 25, 50, 100, 200), replace <- c(F,T))
 pred.random[,2] <- res.random$prediction
 write.table(pred.random, row.names=F, file=paste0(predict_file, "_LASSO.csv"), quote=F, sep=",")       
 
@@ -503,7 +503,7 @@ write.table(pred.lasso, row.names=F, file=paste0(predict_file, "_randomForest.cs
 
 
 
-#### 5. 0's ####
+#### 5. Zero's ####
 
 pred.zeros[,2] <- 0
 write.table(pred.lasso, row.names=F, file=paste0(predict_file, "_zeros.csv"), quote=F, sep=",")
