@@ -59,7 +59,7 @@ Rscript code/code.R --runtype long --fold 5 --train data/train.csv --test data/t
 
 ![TrainingAccuracy](results/rotationForest_training_accuracy.png)
 ![ValidationAccuracy](results/rotationForest_validation_accuracy.png)
-![DontOverfitResults](results/kaggle_score.png)
+![DontOverfitResults](results/kaggle_score.PNG)
 
 
 ## References
